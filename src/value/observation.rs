@@ -167,6 +167,7 @@ impl EcbObservation {
 
 /// 校验观测的完整性与内部一致性。
 pub fn validate_observation(observation: &EcbObservation) -> EcbResult<()> {
+    observation.period.validate()?;
     if let EcbValue::Value(value) = observation.value {
         if !value.is_finite() {
             return Err(EcbError::Invalid("观测值必须是有限数值".to_owned()));
@@ -408,5 +409,31 @@ mod tests {
             None,
         );
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn invalid_public_periods_are_rejected() {
+        for period in [
+            crate::Period::Month {
+                year: 2026,
+                month: 99,
+            },
+            crate::Period::Quarter {
+                year: 2026,
+                quarter: 0,
+            },
+            crate::Period::Year(0),
+        ] {
+            assert!(EcbObservation::new(
+                series(),
+                EcbDataType::PolicyRate,
+                crate::Frequency::Monthly,
+                period,
+                EcbValue::Value(1.0),
+                unit(),
+                None
+            )
+            .is_err());
+        }
     }
 }

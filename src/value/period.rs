@@ -94,6 +94,25 @@ pub enum Period {
 }
 
 impl Period {
+    /// 复验可由调用方直接构造的期间，复用受检构造器的取值域。
+    pub(crate) fn validate(&self) -> EcbResult<()> {
+        match *self {
+            Self::Day(date) | Self::Event { date } => {
+                Date::new(date.year(), date.month(), date.day())?;
+            }
+            Self::Month { year, month } => {
+                Self::month(year, month)?;
+            }
+            Self::Quarter { year, quarter } => {
+                Self::quarter(year, quarter)?;
+            }
+            Self::Year(year) => {
+                Self::year(year)?;
+            }
+        }
+        Ok(())
+    }
+
     /// 构造「某日」。
     #[must_use]
     pub fn day(date: Date) -> Self {
@@ -300,5 +319,36 @@ mod tests {
         assert!(Period::quarter(2026, 5).is_err());
         assert!(Period::year(0).is_err());
         assert!(Period::year(10000).is_err());
+    }
+
+    #[test]
+    fn validation_covers_valid_period_variants() {
+        for key in [
+            "2024-02-29",
+            "2026-09",
+            "2026-Q3",
+            "2026",
+            "event:2026-09-23",
+        ] {
+            assert!(Period::parse(key).unwrap().validate().is_ok());
+        }
+        for period in [
+            Period::Month { year: 0, month: 1 },
+            Period::Month {
+                year: 2026,
+                month: 0,
+            },
+            Period::Quarter {
+                year: 0,
+                quarter: 1,
+            },
+            Period::Quarter {
+                year: 2026,
+                quarter: 5,
+            },
+            Period::Year(10000),
+        ] {
+            assert!(period.validate().is_err());
+        }
     }
 }
