@@ -169,7 +169,11 @@ impl EcbDimension {
     /// 单维度的规范化片段 `id=value`。
     #[must_use]
     pub fn key(&self) -> String {
-        format!("{}={}", self.id, self.value)
+        format!(
+            "{}={}",
+            escape_identity(&self.id),
+            escape_identity(&self.value)
+        )
     }
 }
 
@@ -319,11 +323,11 @@ impl EcbSeriesIdentity {
     pub fn series_id(&self) -> String {
         format!(
             "{}:{}:{}:{}:{}",
-            self.dataflow.dataflow,
-            self.dataflow.dsd,
+            escape_identity(&self.dataflow.dataflow),
+            escape_identity(&self.dataflow.dsd),
             self.dataflow.declared_dimension_key(),
-            self.indicator,
-            self.subject
+            escape_identity(&self.indicator),
+            escape_identity(&self.subject)
         )
     }
 }
@@ -338,6 +342,21 @@ pub fn validate_series_identity(identity: &EcbSeriesIdentity) -> EcbResult<()> {
         return Err(EcbError::Missing("subject 为空".to_owned()));
     }
     Ok(())
+}
+
+/// 对身份组件中的分隔符与转义前缀编码，普通字符保持兼容。
+fn escape_identity(text: &str) -> String {
+    let mut encoded = String::with_capacity(text.len());
+    for character in text.chars() {
+        match character {
+            '%' => encoded.push_str("%25"),
+            ':' => encoded.push_str("%3A"),
+            '.' => encoded.push_str("%2E"),
+            '=' => encoded.push_str("%3D"),
+            other => encoded.push(other),
+        }
+    }
+    encoded
 }
 
 #[cfg(test)]
@@ -492,5 +511,53 @@ mod tests {
     fn fiscal_write_authority_is_refused_as_pending() {
         let error = claim_fiscal_write_authority().expect_err("pending 主权不得主张");
         assert_eq!(error.kind(), EcbErrorKind::WriteAuthorityDenied);
+    }
+
+    #[test]
+    fn identity_delimiters_do_not_collide() {
+        let one = EcbDataflowId::try_new(
+            "SYNTH",
+            "DSD_SYNTH",
+            vec![EcbDimension::try_new("A", "B.C=D").unwrap()],
+        )
+        .unwrap();
+        let two = EcbDataflowId::try_new(
+            "SYNTH",
+            "DSD_SYNTH",
+            vec![
+                EcbDimension::try_new("A", "B").unwrap(),
+                EcbDimension::try_new("C", "D").unwrap(),
+            ],
+        )
+        .unwrap();
+        assert_ne!(one.declared_dimension_key(), two.declared_dimension_key());
+        let left = EcbSeriesIdentity::try_new(one.clone(), "I:S", "T").unwrap();
+        let right = EcbSeriesIdentity::try_new(one, "I", "S:T").unwrap();
+        assert_ne!(left.series_id(), right.series_id());
+    }
+
+    #[test]
+    fn identity_escape_is_unambiguous_and_plain_keys_are_unchanged() {
+        assert_eq!(super::escape_identity("DIM_A"), "DIM_A");
+        assert_eq!(super::escape_identity("中文"), "中文");
+        for (left, right) in [
+            ("A.B", "A%2EB"),
+            ("A=B", "A%3DB"),
+            ("A:B", "A%3AB"),
+            ("A%B", "A%25B"),
+        ] {
+            assert_ne!(super::escape_identity(left), super::escape_identity(right));
+        }
+        let a = EcbDataflowId::try_new("A:B", "C", vec![EcbDimension::try_new("D", "V").unwrap()])
+            .unwrap();
+        let b = EcbDataflowId::try_new("A", "B:C", vec![EcbDimension::try_new("D", "V").unwrap()])
+            .unwrap();
+        assert_ne!(
+            EcbSeriesIdentity::try_new(a, "I", "S").unwrap().series_id(),
+            EcbSeriesIdentity::try_new(b, "I", "S").unwrap().series_id()
+        );
+        let a = EcbDimension::try_new("A=B", "C").unwrap();
+        let b = EcbDimension::try_new("A", "B=C").unwrap();
+        assert_ne!(a.key(), b.key());
     }
 }
