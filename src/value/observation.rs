@@ -167,6 +167,11 @@ impl EcbObservation {
 
 /// 校验观测的完整性与内部一致性。
 pub fn validate_observation(observation: &EcbObservation) -> EcbResult<()> {
+    if let EcbValue::Value(value) = observation.value {
+        if !value.is_finite() {
+            return Err(EcbError::Invalid("观测值必须是有限数值".to_owned()));
+        }
+    }
     validate_series_identity(&observation.series)?;
     if let EcbValue::Missing(EcbMissingReason::SourceStatus(status)) = &observation.value {
         if status.trim().is_empty() {
@@ -222,6 +227,52 @@ mod tests {
             None,
         )
         .expect("合法观测")
+    }
+
+    #[test]
+    fn non_finite_constructor_is_rejected() {
+        let period = Period::day(Date::new(2026, 9, 18).expect("合法日期"));
+        for value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            assert_eq!(
+                EcbObservation::new(
+                    series(),
+                    EcbDataType::PolicyRate,
+                    Frequency::Daily,
+                    period,
+                    EcbValue::Value(value),
+                    unit(),
+                    None
+                )
+                .expect_err("非有限值必须拒绝")
+                .kind(),
+                crate::EcbErrorKind::Invalid
+            );
+        }
+    }
+
+    #[test]
+    fn non_finite_mutation_is_rejected() {
+        let period = Period::day(Date::new(2026, 9, 18).expect("合法日期"));
+        let value = 1.0;
+        let mut sample = EcbObservation::new(
+            series(),
+            EcbDataType::PolicyRate,
+            Frequency::Daily,
+            period,
+            EcbValue::Value(value),
+            unit(),
+            None,
+        )
+        .expect("有限值合法");
+        for value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            sample.value = EcbValue::Value(value);
+            assert_eq!(
+                validate_observation(&sample)
+                    .expect_err("修改后的非有限值必须拒绝")
+                    .kind(),
+                crate::EcbErrorKind::Invalid
+            );
+        }
     }
 
     #[test]
