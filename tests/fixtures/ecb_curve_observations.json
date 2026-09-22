@@ -1,0 +1,38 @@
+{
+  "_synthetic": true,
+  "_note": "本文件为特性 005 自拟的合成样本，不是真实源数据，不构成任何证据。本文件只用于验证「YC 曲线点可以被解析、但不得在本库晋级」这一守卫，不表示任何曲线取值。",
+  "observations": [
+    {
+      "dataflow": "YC",
+      "dsd": "DSD_SYNTH",
+      "dimensions": [
+        { "id": "DIM_A", "value": "VAL_A" },
+        { "id": "DIM_B", "value": "VAL_B" }
+      ],
+      "indicator": "IND_SYNTH",
+      "subject": "SUBJ_SYNTH",
+      "data_type": "ZERO_SPOT",
+      "freq": "Daily",
+      "period": "2026-09-18",
+      "value": 3.0,
+      "unit": "SYNTH_UNIT",
+      "vintage_date": null
+    },
+    {
+      "dataflow": "YC",
+      "dsd": "DSD_SYNTH",
+      "dimensions": [
+        { "id": "DIM_A", "value": "VAL_A" },
+        { "id": "DIM_B", "value": "VAL_E" }
+      ],
+      "indicator": "IND_SYNTH",
+      "subject": "SUBJ_SYNTH",
+      "data_type": "FORWARD",
+      "freq": "Daily",
+      "period": "2026-09-18",
+      "value": 3.1,
+      "unit": "SYNTH_UNIT",
+      "vintage_date": null
+    }
+  ]
+}
