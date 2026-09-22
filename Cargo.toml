@@ -1,0 +1,50 @@
+[package]
+name = "ecbx"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.71"
+description = "ECB 源事实类型层：7 类数据类型、SDMX 身份形、离线解析与 fail-closed 授权判定"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/bytechainx/ecbx"
+homepage = "https://github.com/bytechainx/ecbx"
+documentation = "https://github.com/bytechainx/ecbx#readme"
+readme = "README.md"
+keywords = ["ecb", "sdmx", "macro", "data-source", "types"]
+categories = ["data-structures", "parsing"]
+include = [
+    "src/**/*",
+    "tests/**/*",
+    "benches/**/*",
+    "examples/**/*",
+    "docs/**/*",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTEXT.md",
+    "CONTRIBUTING.md",
+    "LICENSE-*",
+    "Cargo.toml",
+]
+
+[dependencies]
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[dev-dependencies]
+
+[[bench]]
+name = "hot_path"
+harness = false
+
+[lints.rust]
+private_interfaces = "deny"
+private_bounds = "deny"
+unused_must_use = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+unreachable = "deny"
+todo = "deny"
+unimplemented = "deny"

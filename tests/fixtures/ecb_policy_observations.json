@@ -1,0 +1,48 @@
+{
+  "_synthetic": true,
+  "_note": "本文件为特性 005 自拟的合成样本，不是真实源数据，不构成任何证据。取值一律为显式占位（DSD_SYNTH / IND_SYNTH / DIM_A=VAL_A / SYNTH_UNIT），因为清单未给出这些取值。",
+  "observations": [
+    {
+      "dataflow": "BSI",
+      "dsd": "DSD_SYNTH",
+      "dimensions": [
+        { "id": "DIM_A", "value": "VAL_A" },
+        { "id": "DIM_B", "value": "VAL_B" }
+      ],
+      "indicator": "IND_SYNTH",
+      "subject": "SUBJ_SYNTH",
+      "data_type": "POLICY_RATE",
+      "freq": "Daily",
+      "period": "2026-09-18",
+      "value": 3.25,
+      "unit": "SYNTH_UNIT",
+      "vintage_date": null
+    },
+    {
+      "dataflow": "BSI",
+      "dsd": "DSD_SYNTH",
+      "dimensions": [ { "id": "DIM_A", "value": "VAL_C" } ],
+      "indicator": "IND_SYNTH",
+      "subject": "SUBJ_SYNTH",
+      "data_type": "MONEY_STOCK",
+      "freq": "Monthly",
+      "period": "2026-09",
+      "value": null,
+      "obs_status": "SYNTH_STATUS",
+      "unit": "SYNTH_UNIT"
+    },
+    {
+      "dataflow": "BSI",
+      "dsd": "DSD_SYNTH",
+      "dimensions": [ { "id": "DIM_A", "value": "VAL_D" } ],
+      "indicator": "IND_SYNTH",
+      "subject": "SUBJ_SYNTH",
+      "data_type": "RFR_OVERNIGHT",
+      "freq": "Daily",
+      "period": "2026-09-18",
+      "value": 1.9,
+      "unit": "SYNTH_UNIT",
+      "vintage_date": "2026-09-20"
+    }
+  ]
+}
