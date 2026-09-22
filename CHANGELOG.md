@@ -3,6 +3,15 @@
 本文件记录 `ecbx` 的用户可见变更，遵循 [Keep a Changelog](https://keepachangelog.com/)
 与 [Semantic Versioning](https://semver.org/)。
 
+## [Unreleased]
+
+## [0.1.1] - 2026-09-23
+
+### 修正
+
+- 修复宏观数据源对抗审查发现的数值与身份边界缺陷
+- 公开构造器与校验入口拒绝 NaN、正无穷、负无穷；新增构造与字段修改后的回归用例。
+
 ## [0.1.0] - 2026-09-22
 
 ### Added
