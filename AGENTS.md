@@ -60,8 +60,8 @@ cargo package --no-verify
 ## 相关文档
 
 - 组织 Rust 规范：`~/org-config/rulesets/rust/RULES.md`
-- 公共形状契约：`specs/005-macro-data-source-crates/contracts/source-library-contract.md`
-- 跨源语义：`specs/005-macro-data-source-crates/contracts/cross-source-routing.md`
+- 公共形状契约：`specs/features/005-macro-data-source-crates/contracts/source-library-contract.md`
+- 跨源语义：`specs/features/005-macro-data-source-crates/contracts/cross-source-routing.md`
 - 采集范围权威：`specs/adapter/ecb.md`
 - API 文档：`docs/API.md`
 - 标准与验收：`docs/标准.md`

@@ -90,7 +90,7 @@ fn main() -> Result<(), ecbx::EcbError> {
 - **不做派生指标**：净流动性、利差、Credit Impulse、z-score 一律归 analytics
 - **不做单位换算**：保留源单位，换算归下游
 - **不读凭据 / 环境变量**：本层只做离线解析
-- **不建共享 core crate**：公共形状由 `specs/005-*/contracts/` 冻结，各库各自实现一遍
+- **不建共享 core crate**：公共形状由 `specs/features/005-*/contracts/` 冻结，各库各自实现一遍
 
 ## 诚实边界
 

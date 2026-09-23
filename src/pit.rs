@@ -1,7 +1,7 @@
 //! publication 语义：时间精度 + 可得性证据层 + 正式 PIT 资格。
 //!
 //! 本源的三个取值**固定**为 `Date` / `Inferred` / `NotEligible`，且不由调用方决定。
-//! 该三元组的判据见 `specs/005-macro-data-source-crates/contracts/source-library-contract.md` §5。
+//! 该三元组的判据见 `specs/features/005-macro-data-source-crates/contracts/source-library-contract.md` §5。
 
 use crate::value::Date;
 
