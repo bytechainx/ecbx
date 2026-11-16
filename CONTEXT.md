@@ -50,9 +50,10 @@ _Avoid_: 归一化单位（本层不做换算）
 | `memchr` | 2.8.3 | 1.61 |
 | `serde` / `serde_core` | 1.0.229 | 1.56 |
 | `itoa` | 1.0.18 | 1.68 |
-| `proc-macro2` / `quote` / `serde_derive` / `serde_json` / `syn` / `thiserror` / `thiserror-impl` / `unicode-ident` / `zmij` | 见 `cargo metadata` | 1.71 |
+| `proc-macro2` / `quote` / `serde_derive` / `serde_json` / `syn` / `unicode-ident` / `zmij` | 见 `cargo metadata` | 1.71 |
+| `thiserror` / `thiserror-impl` | 2.0.21 | 1.77 |
 
-最大值 = **1.71**，故 `Cargo.toml` 声明 `rust-version = "1.71"`。
+最大值 = **1.77**（`thiserror` / `thiserror-impl` 2.0.21 声明 `rust_version` 1.77），故 `Cargo.toml` 声明 `rust-version = "1.77"`（2026-11-16 复核）。
 无依赖缺失 `rust_version` 的情形，无需保守取值。
 
 ## 已知缺口

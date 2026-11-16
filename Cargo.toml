@@ -2,7 +2,7 @@
 name = "ecbx"
 version = "0.1.2"
 edition = "2021"
-rust-version = "1.71"
+rust-version = "1.77"
 description = "ECB 源事实类型层：7 类数据类型、SDMX 身份形、离线解析与 fail-closed 授权判定"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/bytechainx/ecbx"
