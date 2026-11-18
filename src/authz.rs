@@ -5,7 +5,7 @@
 //! 不改写清单或名册的任何登记值。
 //!
 //! 判定的是「该源的这个范围是否被授权访问」，**不是**「本库是否生产就绪」——
-//! 本库的 `production_decision` 恒为 `NO-GO`，两者共存不矛盾。
+//! 本库的 `production_decision` 为 `GO`（DDR-042），不改变本模块的 fail-closed 授权判定。
 
 use crate::error::{EcbError, EcbResult};
 use crate::value::Date;

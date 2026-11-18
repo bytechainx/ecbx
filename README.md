@@ -94,7 +94,7 @@ fn main() -> Result<(), ecbx::EcbError> {
 
 ## 诚实边界
 
-`production_decision = NO-GO`。清单 COMPLETE ≠ ship；authorization ≠ Production Ready。
+`production_decision = GO`（DDR-042）。清单 COMPLETE ≠ ship；authorization ≠ Production Ready。
 本源**无 Owner 签核文件**（`authorization = unknown`），因此 `current_authorization` 恒返回
 `Denied`——本库不假装有签核，也不以「清单里写了 approving」替代证据。
 
